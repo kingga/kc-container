@@ -59,6 +59,13 @@ describe('Container', () => {
 
             notStrictEqual(foo1, foo2);
         });
+
+        it('shoud allow strings as well as objects', () => {
+            const container = new Container;
+            container.bind('Foo', () => new Foo);
+
+            strictEqual(container.make<Foo>('Foo').alternative, 'faz');
+        });
     });
 
     describe('#singleton', () => {
@@ -81,6 +88,16 @@ describe('Container', () => {
             const faz2 = container.make(Faz);
 
             strictEqual(faz1, faz2);
+        });
+
+        it('shoud allow strings as well as objects', () => {
+            const container = new Container;
+            container.singleton('Foo', () => new Foo);
+
+            strictEqual(
+                container.make<Foo>('Foo').alternative,
+                container.make<Foo>('Foo').alternative
+            );
         });
     });
 

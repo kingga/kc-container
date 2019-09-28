@@ -1,4 +1,6 @@
 # Kings Collection IoC Container
+[![Build Status](https://travis-ci.com/kingga/kc-container.svg?branch=master)](https://travis-ci.com/kingga/kc-container)
+
 A simple IoC container for the kings collection.
 
 ## Installation
