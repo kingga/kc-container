@@ -1,7 +1,8 @@
 language: nodejs
 
-before_script:
-    - yarn install
+cache:
+    yarn: true
+    directories: node_modules
 
 script:
     - yarn test
