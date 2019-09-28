@@ -1,0 +1,52 @@
+{
+    "name": "kc-container",
+    "version": "1.0.0",
+    "description": "A simple IoC container for the kings collection.",
+    "main": "index.js",
+    "scripts": {
+        "test": "nyc mocha 'tests/**/*.ts' --require ts-node/register",
+        "dev": "NODE_ENV=development webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "NODE_ENV=development webpack --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prod": "NODE_ENV=production webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    },
+    "keywords": [
+        "IoC",
+        "Kings Collection",
+        "Container",
+        "JavaScript",
+        "TypeScript",
+        "Container"
+    ],
+    "author": "Isaac Skelton <contact@isaacskelton.com>",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/mocha": "^5.2.7",
+        "cross-env": "^6.0.0",
+        "eslint": "^6.4.0",
+        "laravel-mix": "^5.0.0",
+        "mocha": "^6.2.0",
+        "nyc": "^14.1.1",
+        "ts-loader": "^6.1.2",
+        "ts-node": "^8.4.1",
+        "typescript": "^3.6.3"
+    },
+    "dependencies": {
+        "camelcase": "^5.3.1"
+    },
+    "nyc": {
+        "extension": [
+            ".ts",
+            ".tsx"
+        ],
+        "include": [
+            "src/**/*"
+        ],
+        "exclude": [
+            "**/*/*.d.ts"
+        ],
+        "reporter": [
+            "text"
+        ],
+        "all": true
+    }
+}
