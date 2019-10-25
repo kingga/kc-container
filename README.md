@@ -5,10 +5,10 @@ A simple IoC container for the kings collection.
 
 ## Installation
 ### Yarn
-`yarn add kc-container`
+`yarn add @kingga/kc-container`
 
 ### NPM
-`npm i kc-container`
+`npm i @kingga/kc-container`
 
 ## Usage
 ```ts
