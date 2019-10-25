@@ -42,7 +42,8 @@
             "src/**/*"
         ],
         "exclude": [
-            "**/*/*.d.ts"
+            "**/*/*.d.ts",
+            "**/*/*Type.ts"
         ],
         "reporter": [
             "text"
