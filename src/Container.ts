@@ -65,6 +65,16 @@ export default class Container implements IContainer {
     }
 
     /**
+     * Call a function and try to bind it's arguments.
+     * @param callable The function/method which you would like to call and bind parameters to.
+     */
+    public call<T>(callable: CallableFunction): T {
+        const args = this.resolveDependencies(callable);
+
+        return callable(...args);
+    }
+
+    /**
      * Get a list of arguments which need to be based into this objects constructor.
      * @param obj The object to get the arguments from. This may be a bit hacky but its
      *            currently working with arrow functions and normal functions so I'm

@@ -33,6 +33,16 @@ class State {
     }
 }
 
+class CallbackClass {
+    public static callStatic(foo: Foo): string {
+        return foo.alternative;
+    }
+
+    public call(foo: Foo): string {
+        return foo.alternative;
+    }
+}
+
 describe('Container', () => {
     describe('#bind', () => {
         it('should bind foo to the container', () => {
@@ -131,6 +141,53 @@ describe('Container', () => {
             const stateB = container.make<State>(State);
 
             strictEqual(stateA, stateB)
+        });
+    });
+
+    describe('#call', () => {
+        it('should call a function and pass through the correct bindings', () => {
+            const container = new Container;
+            container.bind(Foo, () => new Foo);
+
+            const foo = container.make<Foo>(Foo);
+            const result = container.call(function (foo: Foo): string {
+                return foo.alternative;
+            });
+
+            strictEqual(foo.alternative, result);
+        });
+
+        it('should call an arrow function and pass through the correct bindings', () => {
+            const container = new Container;
+            container.bind(Foo, () => new Foo);
+
+            const foo = container.make<Foo>(Foo);
+            const result = container.call((foo: Foo): string => {
+                return foo.alternative;
+            });
+
+            strictEqual(foo.alternative, result);
+        });
+
+        it('should call a callback static class method and pass through the correct bindings', () => {
+            const container = new Container;
+            container.bind(Foo, () => new Foo);
+
+            const foo = container.make<Foo>(Foo);
+            const result = container.call(CallbackClass.callStatic);
+
+            strictEqual(foo.alternative, result);
+        });
+
+        it('should call a callback class method and pass through the correct bindings', () => {
+            const container = new Container;
+            container.bind(Foo, () => new Foo);
+            const callable = new CallbackClass;
+
+            const foo = container.make<Foo>(Foo);
+            const result = container.call(callable.call);
+
+            strictEqual(foo.alternative, result);
         });
     });
 });
