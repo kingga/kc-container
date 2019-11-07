@@ -1,7 +1,7 @@
 # Kings Collection IoC Container
 [![Build Status](https://travis-ci.com/kingga/kc-container.svg?branch=master)](https://travis-ci.com/kingga/kc-container)
 
-A simple IoC container for the kings collection.
+A simple IoC container for the kings collection. Inspired by the [Laravel container](https://laravel.com/docs/6.x/container)!
 
 ## Installation
 ### Yarn

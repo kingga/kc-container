@@ -1,11 +1,31 @@
-import IContainer from './contracts/IContainer';
+import IContainer, { HookFor, HookFunction } from './contracts/IContainer';
 import camelcase from 'camelcase';
 import Service from './Service';
 import Class from './Class';
 
+type ExtensionCallable<T> = (service: T, app: IContainer) => T;
+type HookType = 'resolving' | 'resolved';
+
+interface HookInfo<T> {
+    bindings?: HookFor<T>[];
+    hook: HookFunction<T>;
+}
+
+
+interface HookCollection {
+    resolving: HookInfo<any>[];
+    resolved: HookInfo<any>[];
+}
+
 export default class Container implements IContainer {
     private services: Map<string, Service> = new Map;
     private singletons: Map<string, any> = new Map;
+    private extensions: Map<string, ExtensionCallable<any>[]> = new Map;
+    private hooks: HookCollection = {
+        resolving: [],
+        resolved: [],
+    };
+
 
     /**
      * Bind a class to the container and return a new one everytime 'make' is called.
@@ -46,22 +66,76 @@ export default class Container implements IContainer {
     public make<T>(name: Class<T>|string): T {
         const n = typeof name === 'string' ? name : name.name;
         const service: Service|boolean = this.services.get(n) || false;
+        let instance;
+
+        this.runHooks('resolving', n, n);
 
         if (service && service.type === 'singleton') {
             if (this.singletons.has(n)) {
-                return this.singletons.get(n);
+                instance = this.singletons.get(n);
             } else {
-                const singletonInstance = this.createInstance(service);
-                this.singletons.set(n, singletonInstance);
-
-                return singletonInstance;
+                instance = this.createInstance(service);
+                this.singletons.set(n, instance);
             }
         } else if (service && service.type === 'service') {
-            return this.createInstance(service);
+            instance = this.createInstance(service);
         } else if (name instanceof Function) {
             // Try to create the object.
-            return new name(...this.resolveDependencies(name));
+            instance = new name(...this.resolveDependencies(name));
         }
+
+        if (instance) {
+            // Add on the extensions.
+            if (typeof this.extensions[n] !== 'undefined') {
+                this.extensions[n].forEach((extension: ExtensionCallable<T>) => {
+                    instance = extension(instance, this);
+                });
+            }
+
+            this.runHooks('resolved', n, instance);
+
+            return instance;
+        }
+    }
+
+    public resolving<T>(resolver: HookFunction<T>, name?: HookFor<T>[]): void {
+        this.addHook<T>('resolving', {
+            bindings: name,
+            hook: resolver,
+        });
+    }
+
+    public resolved<T>(resolver: HookFunction<T>, name?: HookFor<T>[]): void {
+        this.addHook<T>('resolved', {
+            bindings: name,
+            hook: resolver,
+        });
+    }
+
+    public extend<T>(name: Class<T>|string, definition: ExtensionCallable<T>): void {
+        const n = typeof name === 'string' ? name : name.name;
+
+        if (typeof this.extensions[n] === 'undefined') {
+            this.extensions[n] = [];
+        }
+
+        this.extensions[n].push(definition);
+    }
+
+    protected addHook<T>(name: HookType, hook: HookInfo<T>): void {
+        this.hooks[name].push(hook);
+    }
+
+    protected runHooks(type: HookType, name: string, service: any): void {
+        this.hooks[type].forEach((hook) => {
+            const correctBinding = hook.bindings
+                ? (hook.bindings || []).some((binding) => binding === name)
+                : true;
+
+            if (correctBinding) {
+                hook.hook(service, this);
+            }
+        });
     }
 
     /**

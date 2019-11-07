@@ -1,5 +1,29 @@
-import { notStrictEqual, strictEqual } from 'assert';
+import { notStrictEqual, strictEqual, strict } from 'assert';
 import Container from '../src/Container';
+import IContainer from '../src/contracts/IContainer';
+import { wait } from './helpers/functions';
+
+// TODO: These implementations:
+/*
+$this->app->when('App\Http\Controllers\UserController')
+    ->needs('$variableName')
+    ->give($value);
+
+$this->app->when(PhotoController::class)
+    ->needs(Filesystem::class)
+    ->give(function () {
+        return Storage::disk('local');
+    });
+
+$this->app->when([VideoController::class, UploadController::class])
+    ->needs(Filesystem::class)
+    ->give(function () {
+        return Storage::disk('s3');
+    });
+
+$this->app->tag(['SpeedReport', 'MemoryReport'], 'reports');
+$app->tagged('reports');
+*/
 
 class Foo {
     public alternative: string = 'faz';
@@ -42,6 +66,8 @@ class CallbackClass {
         return foo.alternative;
     }
 }
+
+const waitTime = 50;
 
 describe('Container', () => {
     describe('#bind', () => {
@@ -188,6 +214,103 @@ describe('Container', () => {
             const result = container.call(callable.call);
 
             strictEqual(foo.alternative, result);
+        });
+    });
+
+    describe('#resolving', () => {
+        it('should be able to hook into someone resolving any dependency', async () => {
+            const container = new Container;
+            container.bind(Foo, () => new Foo);
+            container.bind(Faz, () => new Faz(container.make<Foo>(Foo)));
+            let ctr = 0;
+
+            container.resolving((resolving: string, _app: IContainer) => {
+                strictEqual(['Faz', 'Foo'].includes(resolving), true);
+                ctr++;
+            });
+
+            container.make<Faz>(Faz);
+
+            await wait(waitTime);
+            strictEqual(ctr, 2, 'There was not enough asserts.');
+        });
+
+        it('should be able to hook into someone who has resolved a dependency', async () => {
+            const container = new Container;
+            container.singleton(Foo, () => new Foo);
+            const foo = container.make<Foo>(Foo);
+            let ctr = 0;
+
+            container.resolved((resolved: Foo, _app: IContainer) => {
+                strictEqual(resolved, foo);
+                ctr++;
+            });
+
+            container.make<Foo>(Foo);
+
+            await wait(waitTime);
+            strictEqual(ctr, 1, 'There was not enough asserts.');
+        });
+
+        it('should be able to hook into a specific binding which is resolving', async () => {
+            const container = new Container;
+            container.bind(Foo, () => new Foo);
+            container.bind(Faz, () => new Faz(container.make<Foo>(Foo)));
+            let ctr = 0;
+
+            container.resolving((resolving: string, _app: IContainer) => {
+                strictEqual(resolving, 'Faz');
+                ctr++;
+            }, ['Faz']);
+
+            container.resolving((resolving: string, _app: IContainer) => {
+                strictEqual(resolving, 'Foo');
+                ctr++;
+            }, ['Foo']);
+
+            container.make<Faz>(Faz);
+
+            await wait(waitTime);
+            strictEqual(ctr, 2, 'There was not enough asserts.');
+        });
+
+        it('should be able to hook into a specific binding which is resolved', async () => {
+            const container = new Container;
+            container.bind(Foo, () => new Foo);
+            container.bind(Faz, () => new Faz(container.make<Foo>(Foo)));
+            let ctr = 0;
+
+            container.resolved((resolved: Faz) => {
+                strictEqual(resolved instanceof Faz, true);
+                ctr++;
+            }, ['Faz']);
+
+            container.resolved((resolved: Foo) => {
+                strictEqual(resolved instanceof Foo, true);
+                ctr++;
+            }, ['Foo']);
+
+            container.make<Faz>(Faz);
+
+            await wait(waitTime);
+            strictEqual(ctr, 2, 'There was not enough asserts.');
+        });
+    });
+
+    describe('#extend', () => {
+        it('should be able to extend a binding', () => {
+            const container = new Container;
+            container.bind(Foo, () => new Foo);
+
+            strictEqual(container.make<Foo>(Foo).alternative, 'faz');
+
+            container.extend(Foo, (foo: Foo) => {
+                foo.alternative = 'decoratedFoo';
+
+                return foo;
+            });
+
+            strictEqual(container.make<Foo>(Foo).alternative, 'decoratedFoo');
         });
     });
 });
