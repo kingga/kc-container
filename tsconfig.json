@@ -5,6 +5,9 @@
         "noImplicitAny": false,
         "sourceMap": false,
         "inlineSourceMap": false,
+        "declaration": true,
+        "declarationDir": "./dist",
+        "declarationMap": false
     },
     "include": [
         "src/**/*.ts"
