@@ -11,7 +11,6 @@ interface HookInfo<T> {
     hook: HookFunction<T>;
 }
 
-
 interface HookCollection {
     resolving: HookInfo<any>[];
     resolved: HookInfo<any>[];
