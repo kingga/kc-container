@@ -22,8 +22,11 @@
     "author": "Isaac Skelton <contact@isaacskelton.com>",
     "license": "MIT",
     "devDependencies": {
+        "@types/chai": "^4.2.5",
+        "@types/core-js": "^2.5.2",
         "@types/jest": "^24.0.22",
         "@types/mocha": "^5.2.7",
+        "chai": "^4.2.0",
         "cross-env": "^6.0.3",
         "eslint": "^6.4.0",
         "mocha": "^6.2.0",
@@ -34,10 +37,6 @@
         "typescript": "^3.6.3",
         "webpack": "^4.41.2",
         "webpack-cli": "^3.3.10"
-    },
-    "dependencies": {
-        "@types/core-js": "^2.5.2",
-        "camelcase": "^5.3.1"
     },
     "nyc": {
         "extension": [

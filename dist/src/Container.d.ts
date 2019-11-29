@@ -42,6 +42,11 @@ export default class Container implements IContainer {
      */
     call<T>(callable: CallableFunction): T;
     /**
+     * Scan through an ES6 class for it's constructor.
+     * @param cls The classes object after toString() is ran on it.
+     */
+    protected scanForConstructor(cls: string): string;
+    /**
      * Get a list of arguments which need to be based into this objects constructor.
      * @param obj The object to get the arguments from. This may be a bit hacky but its
      *            currently working with arrow functions and normal functions so I'm

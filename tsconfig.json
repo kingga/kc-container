@@ -1,14 +1,14 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "target": "es5",
+        "target": "es6",
         "noImplicitAny": false,
         "sourceMap": false,
         "inlineSourceMap": false,
         "declaration": true,
         "declarationDir": "./dist",
         "declarationMap": false,
-        "lib": ["es5", "es6", "es7", "dom"]
+        "lib": ["es6", "es7", "dom"]
     },
     "include": [
         "src/**/*.ts",

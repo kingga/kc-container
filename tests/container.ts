@@ -1,4 +1,4 @@
-import { notStrictEqual, strictEqual, strict } from 'assert';
+import { assert } from 'chai';
 import Container from '../src/Container';
 import IContainer from '../src/contracts/IContainer';
 import { wait } from './helpers/functions';
@@ -75,7 +75,7 @@ describe('Container', () => {
             const container = new Container;
             container.bind(Foo, () => new Foo);
 
-            strictEqual(container.make<Foo>(Foo).alternative, 'faz');
+            assert.strictEqual(container.make<Foo>(Foo).alternative, 'faz');
         });
 
         it('should bind faz to the container with construction from another binded element', () => {
@@ -83,7 +83,7 @@ describe('Container', () => {
             container.bind(Foo, () => new Foo);
             container.bind(Faz, (app: Container) => new Faz(app.make(Foo)));
 
-            strictEqual(container.make<Faz>(Faz).sibling.alternative, 'faz');
+            assert.strictEqual(container.make<Faz>(Faz).sibling.alternative, 'faz');
         });
 
         it('should not be a singleton object', () => {
@@ -93,14 +93,14 @@ describe('Container', () => {
             const foo1 = container.make(Foo);
             const foo2 = container.make(Foo);
 
-            notStrictEqual(foo1, foo2);
+            assert.notStrictEqual(foo1, foo2);
         });
 
         it('shoud allow strings as well as objects', () => {
             const container = new Container;
             container.bind('Foo', () => new Foo);
 
-            strictEqual(container.make<Foo>('Foo').alternative, 'faz');
+            assert.strictEqual(container.make<Foo>('Foo').alternative, 'faz');
         });
     });
 
@@ -112,7 +112,7 @@ describe('Container', () => {
             const foo1 = container.make(Foo);
             const foo2 = container.make(Foo);
 
-            strictEqual(foo1, foo2);
+            assert.strictEqual(foo1, foo2);
         });
 
         it('should be equal with an object which depends on another dependency', () => {
@@ -123,14 +123,14 @@ describe('Container', () => {
             const faz1 = container.make(Faz);
             const faz2 = container.make(Faz);
 
-            strictEqual(faz1, faz2);
+            assert.strictEqual(faz1, faz2);
         });
 
         it('shoud allow strings as well as objects', () => {
             const container = new Container;
             container.singleton('Foo', () => new Foo);
 
-            strictEqual(
+            assert.strictEqual(
                 container.make<Foo>('Foo').alternative,
                 container.make<Foo>('Foo').alternative
             );
@@ -143,7 +143,7 @@ describe('Container', () => {
             container.bind(Foo, () => new Foo);
             const faz = container.make<Faz>(Faz);
 
-            strictEqual(faz.sibling.alternative, 'faz');
+            assert.strictEqual(faz.sibling.alternative, 'faz');
         });
 
         it('should inject with multiple dependencies in a recursive fashion', () => {
@@ -154,7 +154,7 @@ describe('Container', () => {
             container.bind(Faz, (app: Container) => new Faz(app.make<Foo>(Foo)));
             const baz = container.make<Baz>(Baz);
 
-            strictEqual(baz.parent.sibling.alternative, 'faz');
+            assert.strictEqual(baz.parent.sibling.alternative, 'faz');
         });
 
         it('should be the same since it is a singleton', () => {
@@ -166,7 +166,7 @@ describe('Container', () => {
 
             const stateB = container.make<State>(State);
 
-            strictEqual(stateA, stateB)
+            assert.strictEqual(stateA, stateB)
         });
     });
 
@@ -180,7 +180,7 @@ describe('Container', () => {
                 return foo.alternative;
             });
 
-            strictEqual(foo.alternative, result);
+            assert.strictEqual(foo.alternative, result);
         });
 
         it('should call an arrow function and pass through the correct bindings', () => {
@@ -192,7 +192,7 @@ describe('Container', () => {
                 return foo.alternative;
             });
 
-            strictEqual(foo.alternative, result);
+            assert.strictEqual(foo.alternative, result);
         });
 
         it('should call a callback static class method and pass through the correct bindings', () => {
@@ -202,7 +202,7 @@ describe('Container', () => {
             const foo = container.make<Foo>(Foo);
             const result = container.call(CallbackClass.callStatic);
 
-            strictEqual(foo.alternative, result);
+            assert.strictEqual(foo.alternative, result);
         });
 
         it('should call a callback class method and pass through the correct bindings', () => {
@@ -213,7 +213,7 @@ describe('Container', () => {
             const foo = container.make<Foo>(Foo);
             const result = container.call(callable.call);
 
-            strictEqual(foo.alternative, result);
+            assert.strictEqual(foo.alternative, result);
         });
     });
 
@@ -225,14 +225,14 @@ describe('Container', () => {
             let ctr = 0;
 
             container.resolving((resolving: string, _app: IContainer) => {
-                strictEqual(['Faz', 'Foo'].includes(resolving), true);
+                assert.strictEqual(['Faz', 'Foo'].includes(resolving), true);
                 ctr++;
             });
 
             container.make<Faz>(Faz);
 
             await wait(waitTime);
-            strictEqual(ctr, 2, 'There was not enough asserts.');
+            assert.strictEqual(ctr, 2, 'There was not enough asserts.');
         });
 
         it('should be able to hook into someone who has resolved a dependency', async () => {
@@ -242,14 +242,14 @@ describe('Container', () => {
             let ctr = 0;
 
             container.resolved((resolved: Foo, _app: IContainer) => {
-                strictEqual(resolved, foo);
+                assert.strictEqual(resolved, foo);
                 ctr++;
             });
 
             container.make<Foo>(Foo);
 
             await wait(waitTime);
-            strictEqual(ctr, 1, 'There was not enough asserts.');
+            assert.strictEqual(ctr, 1, 'There was not enough asserts.');
         });
 
         it('should be able to hook into a specific binding which is resolving', async () => {
@@ -259,19 +259,19 @@ describe('Container', () => {
             let ctr = 0;
 
             container.resolving((resolving: string, _app: IContainer) => {
-                strictEqual(resolving, 'Faz');
+                assert.strictEqual(resolving, 'Faz');
                 ctr++;
             }, ['Faz']);
 
             container.resolving((resolving: string, _app: IContainer) => {
-                strictEqual(resolving, 'Foo');
+                assert.strictEqual(resolving, 'Foo');
                 ctr++;
             }, ['Foo']);
 
             container.make<Faz>(Faz);
 
             await wait(waitTime);
-            strictEqual(ctr, 2, 'There was not enough asserts.');
+            assert.strictEqual(ctr, 2, 'There was not enough asserts.');
         });
 
         it('should be able to hook into a specific binding which is resolved', async () => {
@@ -281,19 +281,19 @@ describe('Container', () => {
             let ctr = 0;
 
             container.resolved((resolved: Faz) => {
-                strictEqual(resolved instanceof Faz, true);
+                assert.strictEqual(resolved instanceof Faz, true);
                 ctr++;
             }, ['Faz']);
 
             container.resolved((resolved: Foo) => {
-                strictEqual(resolved instanceof Foo, true);
+                assert.strictEqual(resolved instanceof Foo, true);
                 ctr++;
             }, ['Foo']);
 
             container.make<Faz>(Faz);
 
             await wait(waitTime);
-            strictEqual(ctr, 2, 'There was not enough asserts.');
+            assert.strictEqual(ctr, 2, 'There was not enough asserts.');
         });
     });
 
@@ -302,7 +302,7 @@ describe('Container', () => {
             const container = new Container;
             container.bind(Foo, () => new Foo);
 
-            strictEqual(container.make<Foo>(Foo).alternative, 'faz');
+            assert.strictEqual(container.make<Foo>(Foo).alternative, 'faz');
 
             container.extend(Foo, (foo: Foo) => {
                 foo.alternative = 'decoratedFoo';
@@ -310,7 +310,7 @@ describe('Container', () => {
                 return foo;
             });
 
-            strictEqual(container.make<Foo>(Foo).alternative, 'decoratedFoo');
+            assert.strictEqual(container.make<Foo>(Foo).alternative, 'decoratedFoo');
         });
     });
 });

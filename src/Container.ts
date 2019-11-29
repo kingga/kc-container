@@ -1,5 +1,5 @@
 import IContainer, { HookFor, HookFunction } from './contracts/IContainer';
-import camelcase from 'camelcase';
+import { pascalcase } from './helpers/pascalcase';
 import Service from './Service';
 import Class from './Class';
 
@@ -148,6 +148,20 @@ export default class Container implements IContainer {
     }
 
     /**
+     * Scan through an ES6 class for it's constructor.
+     * @param cls The classes object after toString() is ran on it.
+     */
+    protected scanForConstructor(cls: string): string {
+        const pos = cls.indexOf('constructor');
+        cls = cls.substr(pos);
+
+        const end = cls.indexOf('{');
+        cls = cls.substr(0, end);
+
+        return cls;
+    }
+
+    /**
      * Get a list of arguments which need to be based into this objects constructor.
      * @param obj The object to get the arguments from. This may be a bit hacky but its
      *            currently working with arrow functions and normal functions so I'm
@@ -156,6 +170,11 @@ export default class Container implements IContainer {
     protected getArgumentNames(obj: object): string[] {
         let str = obj.toString();
         let params: string[] = [];
+
+        // Check if it's an ES6 class.
+        if (str.substr(0, 5) === 'class') {
+            str = this.scanForConstructor(str);
+        }
 
         // Remove comments of the form /* ... */
         // Removing comments of the form //
@@ -197,11 +216,7 @@ export default class Container implements IContainer {
         let bindings: any[] = [];
 
         params.forEach((param: string) => {
-            param = camelcase(param, {
-                pascalCase: true,
-            });
-
-            bindings.push(this.make(param));
+            bindings.push(this.make(pascalcase(param)));
         });
 
         return bindings;
