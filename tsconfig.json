@@ -7,9 +7,11 @@
         "inlineSourceMap": false,
         "declaration": true,
         "declarationDir": "./dist",
-        "declarationMap": false
+        "declarationMap": false,
+        "lib": ["es5", "es6", "es7", "dom"]
     },
     "include": [
-        "src/**/*.ts"
+        "src/**/*.ts",
+        "src/*.ts"
     ]
 }
