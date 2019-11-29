@@ -2,14 +2,14 @@
     "name": "@kingga/kc-container",
     "version": "1.0.3",
     "description": "A simple IoC container for the kings collection.",
-    "main": "dist/index.js",
+    "main": "build/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
         "test": "nyc mocha 'tests/**/*.ts' --require ts-node/register",
         "dev": "webpack --mode development",
         "watch": "webpack --mode development --watch",
         "prod": "webpack --mode production",
-        "prepublish": "yarn test && yarn dev"
+        "prepublish": "yarn test && yarn prod && yarn tsc"
     },
     "keywords": [
         "IoC",
@@ -24,7 +24,6 @@
     "devDependencies": {
         "@types/chai": "^4.2.5",
         "@types/core-js": "^2.5.2",
-        "@types/jest": "^24.0.22",
         "@types/mocha": "^5.2.7",
         "chai": "^4.2.0",
         "cross-env": "^6.0.3",

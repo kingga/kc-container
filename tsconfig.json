@@ -8,10 +8,16 @@
         "declaration": true,
         "declarationDir": "./dist",
         "declarationMap": false,
-        "lib": ["es6", "es7", "dom"]
+        "lib": ["es6", "es7", "dom"],
+        "outDir": "./build"
     },
     "include": [
         "src/**/*.ts",
-        "src/*.ts"
+        "src/*.ts",
+        "index.ts"
+    ],
+    "exclude": [
+        "node_modules/**/*",
+        "tests/**/*"
     ]
 }
