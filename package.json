@@ -2,7 +2,7 @@
     "name": "@kingga/kc-container",
     "version": "1.0.3",
     "description": "A simple IoC container for the kings collection.",
-    "main": "dist/Container.js",
+    "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
         "test": "nyc mocha 'tests/**/*.ts' --require ts-node/register",
