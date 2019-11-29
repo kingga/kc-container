@@ -1,1 +1,125 @@
-!function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=0)}([function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r=n(1);t.default=r.default},function(e,t,n){"use strict";var r=this&&this.__spreadArrays||function(){for(var e=0,t=0,n=arguments.length;t<n;t++)e+=arguments[t].length;var r=Array(e),o=0;for(t=0;t<n;t++)for(var s=arguments[t],i=0,a=s.length;i<a;i++,o++)r[o]=s[i];return r};Object.defineProperty(t,"__esModule",{value:!0});var o=n(2),s=function(){function e(){this.services=new Map,this.singletons=new Map,this.extensions=new Map,this.hooks={resolving:[],resolved:[]}}return e.prototype.bind=function(e,t){var n="string"==typeof e?e:e.name;this.services.set(n,{name:n,definition:t,type:"service"})},e.prototype.singleton=function(e,t){var n="string"==typeof e?e:e.name;this.services.set(n,{name:n,definition:t,type:"singleton"})},e.prototype.make=function(e){var t,n=this,o="string"==typeof e?e:e.name,s=this.services.get(o)||!1;if(this.runHooks("resolving",o,o),s&&"singleton"===s.type?this.singletons.has(o)?t=this.singletons.get(o):(t=this.createInstance(s),this.singletons.set(o,t)):s&&"service"===s.type?t=this.createInstance(s):e instanceof Function&&(t=new(e.bind.apply(e,r([void 0],this.resolveDependencies(e))))),t)return void 0!==this.extensions[o]&&this.extensions[o].forEach((function(e){t=e(t,n)})),this.runHooks("resolved",o,t),t},e.prototype.resolving=function(e,t){this.addHook("resolving",{bindings:t,hook:e})},e.prototype.resolved=function(e,t){this.addHook("resolved",{bindings:t,hook:e})},e.prototype.extend=function(e,t){var n="string"==typeof e?e:e.name;void 0===this.extensions[n]&&(this.extensions[n]=[]),this.extensions[n].push(t)},e.prototype.addHook=function(e,t){this.hooks[e].push(t)},e.prototype.runHooks=function(e,t,n){var r=this;this.hooks[e].forEach((function(e){(!e.bindings||(e.bindings||[]).some((function(e){return e===t})))&&e.hook(n,r)}))},e.prototype.call=function(e){var t=this.resolveDependencies(e);return e.apply(void 0,t)},e.prototype.getArgumentNames=function(e){var t=e.toString(),n=[],r=(t=t.replace(/\/\*[\s\S]*?\*\//g,"").replace(/\/\/(.)*/g,"").replace(/{[\s\S]*}/,"").replace(/=>/g,"").trim()).indexOf("(")+1,o=t.length-1;return t.substring(r,o).split(", ").forEach((function(e){(e=e.replace(/=[\s\S]*/g,"").trim()).length>0&&n.push(e)})),n},e.prototype.resolveDependencies=function(e){var t=this,n=this.getArgumentNames(e),r=[];return n.forEach((function(e){e=o.default(e,{pascalCase:!0}),r.push(t.make(e))})),r},e.prototype.createInstance=function(e){return e.definition(this)},e}();t.default=s},function(e,t,n){"use strict";const r=(e,t)=>{if("string"!=typeof e&&!Array.isArray(e))throw new TypeError("Expected the input to be `string | string[]`");t=Object.assign({pascalCase:!1},t);return 0===(e=Array.isArray(e)?e.map(e=>e.trim()).filter(e=>e.length).join("-"):e.trim()).length?"":1===e.length?t.pascalCase?e.toUpperCase():e.toLowerCase():(e!==e.toLowerCase()&&(e=(e=>{let t=!1,n=!1,r=!1;for(let o=0;o<e.length;o++){const s=e[o];t&&/[a-zA-Z]/.test(s)&&s.toUpperCase()===s?(e=e.slice(0,o)+"-"+e.slice(o),t=!1,r=n,n=!0,o++):n&&r&&/[a-zA-Z]/.test(s)&&s.toLowerCase()===s?(e=e.slice(0,o-1)+"-"+e.slice(o-1),r=n,n=!1,t=!0):(t=s.toLowerCase()===s&&s.toUpperCase()!==s,r=n,n=s.toUpperCase()===s&&s.toLowerCase()!==s)}return e})(e)),(e=>t.pascalCase?e.charAt(0).toUpperCase()+e.slice(1):e)(e=e.replace(/^[_.\- ]+/,"").toLowerCase().replace(/[_.\- ]+(\w|$)/g,(e,t)=>t.toUpperCase()).replace(/\d+(\w|$)/g,e=>e.toUpperCase())))};e.exports=r,e.exports.default=r}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = "./index.ts");
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./index.ts":
+/*!******************!*\
+  !*** ./index.ts ***!
+  \******************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar Container_1 = __webpack_require__(/*! ./src/Container */ \"./src/Container.ts\");\r\nexports.default = Container_1.default;\r\n\n\n//# sourceURL=webpack:///./index.ts?");
+
+/***/ }),
+
+/***/ "./node_modules/camelcase/index.js":
+/*!*****************************************!*\
+  !*** ./node_modules/camelcase/index.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nconst preserveCamelCase = string => {\n\tlet isLastCharLower = false;\n\tlet isLastCharUpper = false;\n\tlet isLastLastCharUpper = false;\n\n\tfor (let i = 0; i < string.length; i++) {\n\t\tconst character = string[i];\n\n\t\tif (isLastCharLower && /[a-zA-Z]/.test(character) && character.toUpperCase() === character) {\n\t\t\tstring = string.slice(0, i) + '-' + string.slice(i);\n\t\t\tisLastCharLower = false;\n\t\t\tisLastLastCharUpper = isLastCharUpper;\n\t\t\tisLastCharUpper = true;\n\t\t\ti++;\n\t\t} else if (isLastCharUpper && isLastLastCharUpper && /[a-zA-Z]/.test(character) && character.toLowerCase() === character) {\n\t\t\tstring = string.slice(0, i - 1) + '-' + string.slice(i - 1);\n\t\t\tisLastLastCharUpper = isLastCharUpper;\n\t\t\tisLastCharUpper = false;\n\t\t\tisLastCharLower = true;\n\t\t} else {\n\t\t\tisLastCharLower = character.toLowerCase() === character && character.toUpperCase() !== character;\n\t\t\tisLastLastCharUpper = isLastCharUpper;\n\t\t\tisLastCharUpper = character.toUpperCase() === character && character.toLowerCase() !== character;\n\t\t}\n\t}\n\n\treturn string;\n};\n\nconst camelCase = (input, options) => {\n\tif (!(typeof input === 'string' || Array.isArray(input))) {\n\t\tthrow new TypeError('Expected the input to be `string | string[]`');\n\t}\n\n\toptions = Object.assign({\n\t\tpascalCase: false\n\t}, options);\n\n\tconst postProcess = x => options.pascalCase ? x.charAt(0).toUpperCase() + x.slice(1) : x;\n\n\tif (Array.isArray(input)) {\n\t\tinput = input.map(x => x.trim())\n\t\t\t.filter(x => x.length)\n\t\t\t.join('-');\n\t} else {\n\t\tinput = input.trim();\n\t}\n\n\tif (input.length === 0) {\n\t\treturn '';\n\t}\n\n\tif (input.length === 1) {\n\t\treturn options.pascalCase ? input.toUpperCase() : input.toLowerCase();\n\t}\n\n\tconst hasUpperCase = input !== input.toLowerCase();\n\n\tif (hasUpperCase) {\n\t\tinput = preserveCamelCase(input);\n\t}\n\n\tinput = input\n\t\t.replace(/^[_.\\- ]+/, '')\n\t\t.toLowerCase()\n\t\t.replace(/[_.\\- ]+(\\w|$)/g, (_, p1) => p1.toUpperCase())\n\t\t.replace(/\\d+(\\w|$)/g, m => m.toUpperCase());\n\n\treturn postProcess(input);\n};\n\nmodule.exports = camelCase;\n// TODO: Remove this for the next major release\nmodule.exports.default = camelCase;\n\n\n//# sourceURL=webpack:///./node_modules/camelcase/index.js?");
+
+/***/ }),
+
+/***/ "./src/Container.ts":
+/*!**************************!*\
+  !*** ./src/Container.ts ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\r\nvar __spreadArrays = (this && this.__spreadArrays) || function () {\r\n    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;\r\n    for (var r = Array(s), k = 0, i = 0; i < il; i++)\r\n        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)\r\n            r[k] = a[j];\r\n    return r;\r\n};\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar camelcase_1 = __webpack_require__(/*! camelcase */ \"./node_modules/camelcase/index.js\");\r\nvar Container = /** @class */ (function () {\r\n    function Container() {\r\n        this.services = new Map;\r\n        this.singletons = new Map;\r\n        this.extensions = new Map;\r\n        this.hooks = {\r\n            resolving: [],\r\n            resolved: [],\r\n        };\r\n    }\r\n    /**\r\n     * Bind a class to the container and return a new one everytime 'make' is called.\r\n     * @param name The name of the class or the class itself.\r\n     * @param definition The function which returns a new instance of the class.\r\n     */\r\n    Container.prototype.bind = function (name, definition) {\r\n        var n = typeof name === 'string' ? name : name.name;\r\n        this.services.set(n, {\r\n            name: n,\r\n            definition: definition,\r\n            type: 'service',\r\n        });\r\n    };\r\n    /**\r\n     * Bind a class to the container and cache it for multiple requests for it.\r\n     * This will create a singleton so the same object will always be returned.\r\n     * @param name The name of the class or the class itself.\r\n     * @param definition The function which returns an instance of the class.\r\n     */\r\n    Container.prototype.singleton = function (name, definition) {\r\n        var n = typeof name === 'string' ? name : name.name;\r\n        this.services.set(n, {\r\n            name: n,\r\n            definition: definition,\r\n            type: 'singleton',\r\n        });\r\n    };\r\n    /**\r\n     * Construct an object with dependency injection using binded objects in this\r\n     * container.\r\n     * @param name The name of the class which you want to create.\r\n     */\r\n    Container.prototype.make = function (name) {\r\n        var _this = this;\r\n        var n = typeof name === 'string' ? name : name.name;\r\n        var service = this.services.get(n) || false;\r\n        var instance;\r\n        this.runHooks('resolving', n, n);\r\n        if (service && service.type === 'singleton') {\r\n            if (this.singletons.has(n)) {\r\n                instance = this.singletons.get(n);\r\n            }\r\n            else {\r\n                instance = this.createInstance(service);\r\n                this.singletons.set(n, instance);\r\n            }\r\n        }\r\n        else if (service && service.type === 'service') {\r\n            instance = this.createInstance(service);\r\n        }\r\n        else if (name instanceof Function) {\r\n            // Try to create the object.\r\n            instance = new (name.bind.apply(name, __spreadArrays([void 0], this.resolveDependencies(name))))();\r\n        }\r\n        if (instance) {\r\n            // Add on the extensions.\r\n            if (typeof this.extensions[n] !== 'undefined') {\r\n                this.extensions[n].forEach(function (extension) {\r\n                    instance = extension(instance, _this);\r\n                });\r\n            }\r\n            this.runHooks('resolved', n, instance);\r\n            return instance;\r\n        }\r\n    };\r\n    Container.prototype.resolving = function (resolver, name) {\r\n        this.addHook('resolving', {\r\n            bindings: name,\r\n            hook: resolver,\r\n        });\r\n    };\r\n    Container.prototype.resolved = function (resolver, name) {\r\n        this.addHook('resolved', {\r\n            bindings: name,\r\n            hook: resolver,\r\n        });\r\n    };\r\n    Container.prototype.extend = function (name, definition) {\r\n        var n = typeof name === 'string' ? name : name.name;\r\n        if (typeof this.extensions[n] === 'undefined') {\r\n            this.extensions[n] = [];\r\n        }\r\n        this.extensions[n].push(definition);\r\n    };\r\n    Container.prototype.addHook = function (name, hook) {\r\n        this.hooks[name].push(hook);\r\n    };\r\n    Container.prototype.runHooks = function (type, name, service) {\r\n        var _this = this;\r\n        this.hooks[type].forEach(function (hook) {\r\n            var correctBinding = hook.bindings\r\n                ? (hook.bindings || []).some(function (binding) { return binding === name; })\r\n                : true;\r\n            if (correctBinding) {\r\n                hook.hook(service, _this);\r\n            }\r\n        });\r\n    };\r\n    /**\r\n     * Call a function and try to bind it's arguments.\r\n     * @param callable The function/method which you would like to call and bind parameters to.\r\n     */\r\n    Container.prototype.call = function (callable) {\r\n        var args = this.resolveDependencies(callable);\r\n        return callable.apply(void 0, args);\r\n    };\r\n    /**\r\n     * Get a list of arguments which need to be based into this objects constructor.\r\n     * @param obj The object to get the arguments from. This may be a bit hacky but its\r\n     *            currently working with arrow functions and normal functions so I'm\r\n     *            not going to complain.\r\n     */\r\n    Container.prototype.getArgumentNames = function (obj) {\r\n        var str = obj.toString();\r\n        var params = [];\r\n        // Remove comments of the form /* ... */\r\n        // Removing comments of the form //\r\n        // Remove body of the function { ... }\r\n        // removing '=>' if func is arrow function\r\n        str = str.replace(/\\/\\*[\\s\\S]*?\\*\\//g, '')\r\n            .replace(/\\/\\/(.)*/g, '')\r\n            .replace(/{[\\s\\S]*}/, '')\r\n            .replace(/=>/g, '')\r\n            .trim();\r\n        // Start parameter names after first '('\r\n        var start = str.indexOf('(') + 1;\r\n        // End parameter names is just before last ')'\r\n        var end = str.length - 1;\r\n        var results = str.substring(start, end).split(', ');\r\n        results.forEach(function (result) {\r\n            // Removing any default value\r\n            result = result.replace(/=[\\s\\S]*/g, '').trim();\r\n            if (result.length > 0) {\r\n                params.push(result);\r\n            }\r\n        });\r\n        return params;\r\n    };\r\n    /**\r\n     * Get a list of things which needs to be passed in and look inside\r\n     * of the container for these items.\r\n     * @param obj The object to resolve the dependencies for.\r\n     */\r\n    Container.prototype.resolveDependencies = function (obj) {\r\n        var _this = this;\r\n        var params = this.getArgumentNames(obj);\r\n        var bindings = [];\r\n        params.forEach(function (param) {\r\n            param = camelcase_1.default(param, {\r\n                pascalCase: true,\r\n            });\r\n            bindings.push(_this.make(param));\r\n        });\r\n        return bindings;\r\n    };\r\n    /**\r\n     * Create a new instance using the services definition function and pass\r\n     * and instance of this container into it just incase they don't want\r\n     * to use arrow functions for some weird reason.\r\n     * @param service The service to construct.\r\n     */\r\n    Container.prototype.createInstance = function (service) {\r\n        return service.definition(this);\r\n    };\r\n    return Container;\r\n}());\r\nexports.default = Container;\r\n\n\n//# sourceURL=webpack:///./src/Container.ts?");
+
+/***/ })
+
+/******/ });
